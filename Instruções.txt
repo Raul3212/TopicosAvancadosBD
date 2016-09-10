@@ -1,0 +1,10 @@
+INSTALAR:
+1- Postgis (PostgreSQL: PgAdmin -> Console -> "Create extension postgis")
+2- QGis
+
+PLOTAR:
+>> Plano Cartesiano:
+    - Longitude: eixo x
+    - Latitude: eixo y
+
+
