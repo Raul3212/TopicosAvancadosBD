@@ -52,12 +52,25 @@ def regionQueryMultipleTaxis (taxistaIndex, eps, dataset):
 	distinctTaxis =  Set()
 	taxista = dataset[taxistaIndex]
 	taxistaIndexNew = taxistaIndex - 1
-	for taxistaIndexNew in range (len(dataset)):
+	while taxistaIndexNew >= 0: 
 		taxistaNew = dataset[taxistaIndexNew]
 		if taxista.distance(taxistaNew) <= eps: # and taxistaNew.id != taxista.id and taxistaNew.id not in distinctTaxis:
 			neighborPts.append(taxistaIndexNew)
 			distinctTaxis.add(taxistaNew.id)
-	return neighborPts, len(distinctTaxis) 	
+		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:
+			break
+		taxistaIndexNew = taxistaIndexNew - 1
+
+	taxistaIndexNew = taxistaIndex + 1
+	while taxistaIndexNew < len(dataset): 
+		taxistaNew = dataset[taxistaIndexNew]
+		if taxista.distance(taxistaNew) <= eps: # and taxistaNew.id != taxista.id and taxistaNew.id not in distinctTaxis:
+			neighborPts.append(taxistaIndexNew)
+			distinctTaxis.add(taxistaNew.id)
+		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:
+			break
+		taxistaIndexNew = taxistaIndexNew + 1
+	return neighborPts, len(distinctTaxis) 
 			
 def joinList(mainList, secondaryList):
 	for i in secondaryList:
