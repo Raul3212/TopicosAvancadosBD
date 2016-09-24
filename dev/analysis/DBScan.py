@@ -23,7 +23,7 @@ def DBSCAN(dataset, eps, minPts):
 def expandCluster(p, neighborPts, cluster, eps, minPts, dataset, visited, noise, inCluster):
 	cluster.append(p)
 	inCluster[p] = True
-	for i in range (len (neighborPts)):
+	for i in neighborPts:
 		if !visited[i]: 
 			visited[i] = True
 			neighborPtsNew = regionQuery(i, eps, dataset)
@@ -36,10 +36,11 @@ def expandCluster(p, neighborPts, cluster, eps, minPts, dataset, visited, noise,
 def regionQuery (taxistaIndex, eps, dataset):
 	neighborPts = []
 	taxista = dataset[taxistaIndex]
-	for taxistaNew in dataset:
+	for taxistaIndexNew in range(len(dataset)):
+		taxistaNew = taxista[taxistaIndexNew]
 		if taxistaNew.id != taxista.id:
 			if taxista.distance(taxistaNew) <= eps: 
-				neighborPts.append(taxistaNew)
+				neighborPts.append(taxistaIndexNew)
 	return neighborPts 		
 			
 '''
