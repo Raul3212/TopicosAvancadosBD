@@ -67,7 +67,8 @@ def preprocessVertices(pathCsv):
     #print data
     connectionFactory = ConnectionFactory()
     verticeDAO = VerticeDAO(connectionFactory.getConnection())
-    verticeDAO.executeMany(data)
+    if(len(data) > 0):
+            verticeDAO.executeMany(data)
 
 def preprocessTaxistas(pathCsv):
     #generate_text_file()
@@ -87,7 +88,9 @@ def preprocessTaxistas(pathCsv):
     while(skiprows < TDRIVELINES):
         data = iter_loadcsv(pathCsv, dtypes, dtype, date_condition, skiprows = skiprows, limit = step)
         print data
-        taxistaDAO.executeMany(data)
+        print skiprows
+        if(len(data) > 0):
+            taxistaDAO.executeMany(data)
         skiprows += step
     
 
@@ -101,10 +104,11 @@ def preprocessRotas(pathCsv):
     rotasDAO = RotasDAO(connectionFactory.getConnection())
 
     skiprows = 1
-    step = 10000
+    step = 1000000
     while(skiprows < TROADSLINES):
         data = iter_loadcsv(pathCsv, dtypes, dtype, default_condition, skiprows = skiprows, limit = step)
         print data
-        rotasDAO.executeMany(data)
+        if(len(data) > 0):
+            rotasDAO.executeMany(data)
         skiprows += step
     

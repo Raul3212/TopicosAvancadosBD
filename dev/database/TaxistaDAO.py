@@ -7,8 +7,9 @@ class TaxistaDAO:
         
 	def selectAll(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas""")
+		cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas where tempo >= '2008-02-04 00:00:00' and tempo < '2008-02-05 00:00:00' """)
 		rows = cur.fetchall()
+		cur.close()
 		taxistas = []
 		for row in rows:
 			taxista = Taxista(row[0], row[1], row[2], row[3])
@@ -19,3 +20,4 @@ class TaxistaDAO:
 		cur = self.__conn.cursor()
 		cur.executemany("""INSERT INTO taxistas (id_driver, tempo, longitude, latitude) VALUES (%s, %s, %s,%s)""", vertices)
 		self.__conn.commit()
+		cur.close()

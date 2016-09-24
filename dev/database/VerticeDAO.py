@@ -14,3 +14,4 @@ class VerticeDAO:
 		cur = self.__conn.cursor()
 		cur.executemany("""INSERT INTO vertices (id_vertice, longitude, latitude) VALUES (%s,%s,%s)""", vertices)
 		self.__conn.commit()
+		cur.close()
