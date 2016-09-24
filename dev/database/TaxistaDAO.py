@@ -7,7 +7,8 @@ class TaxistaDAO:
         
 	def selectAll(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas where tempo >= '2008-02-04 00:00:00' and tempo < '2008-02-05 00:00:00' """)
+		#cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas where tempo >= '2008-02-04 00:00:00' and tempo < '2008-02-05 00:00:00' """)
+		cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas""")
 		rows = cur.fetchall()
 		cur.close()
 		taxistas = []

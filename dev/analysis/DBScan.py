@@ -8,7 +8,7 @@ def DBSCAN(dataset, eps, minPts):
 	noise = [False] * n
 	inCluster = [False] * n
 	for p in range(n):
-		print "taxista: " + str(p) 
+		#print "taxista: " + str(p) 
 		if visited[p]:
 			continue
 		visited[p] = True
@@ -19,7 +19,7 @@ def DBSCAN(dataset, eps, minPts):
 			newCluster = []
 			clusters.append(newCluster)
 			expandCluster(p, neighborPts, newCluster, eps, minPts, dataset, visited, noise, inCluster)
-			print newCluster
+			#print newCluster
 	return (clusters, noise)		
 
 def expandCluster(p, neighborPts, cluster, eps, minPts, dataset, visited, noise, inCluster):
@@ -28,20 +28,20 @@ def expandCluster(p, neighborPts, cluster, eps, minPts, dataset, visited, noise,
 	thisCluster = {}
 	thisCluster[dataset[p].id] = True
 	for i in neighborPts:
-		print "Vizinho: " + str(i)
+		#print "Vizinho: " + str(i)
 		if visited[i] is not True: 
 			visited[i] = True
 			neighborPtsNew = regionQueryInCluster(i, eps, dataset)
 			if len(neighborPtsNew) >= minPts:
 				joinList(neighborPts, neighborPtsNew)
-			print "Vizinhos: " + str (len (neighborPts))
+			#print "Vizinhos: " + str (len (neighborPts))
 		if dataset[i].id in thisCluster:
 			inCluster[i] = True
 		if inCluster[i] is not True and dataset[i].id not in thisCluster:
 			cluster.append(i)
 			inCluster[i] = True
 			thisCluster[dataset[i].id] = True
-		print "Cluster: " + str(len(cluster))	
+		#print "Cluster: " + str(len(cluster))	
 
 def regionQuery (taxistaIndex, eps, dataset, inCluster, thisCluster = {}):
 	neighborPts = []

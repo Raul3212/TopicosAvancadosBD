@@ -12,7 +12,7 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 data = taxistaDAO.selectAll()
 
 
-result = DBSCAN(data, 0.005, 100)
+result = DBSCAN(data, 0.05, 5)
 
 clusters = result[0]
 for cluster in clusters:
@@ -22,4 +22,4 @@ for cluster in clusters:
 
 for i in range(len(data)):
 	if result[1][i]:
-		print i	
+		print str(i) + " - " + str(data[i].id)
