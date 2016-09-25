@@ -7,4 +7,4 @@ PLOTAR:
     - Longitude: eixo x
     - Latitude: eixo y
 
-
+http://stackoverflow.com/questions/10775133/best-programming-language-to-implement-dbscan-algorithm-querying-a-mongodb-datab

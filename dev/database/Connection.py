@@ -4,7 +4,7 @@ class ConnectionFactory:
 	
 	def getConnection(self):
 		try:
-		    __conn = psycopg2.connect("dbname='taxistasteste' user='postgres' host='localhost' password='postgres'")
+		    __conn = psycopg2.connect("dbname='taxistas' user='postgres' host='localhost' password='postgres'")
 		    return __conn
 		except:
 		    print "Error connecting database"
