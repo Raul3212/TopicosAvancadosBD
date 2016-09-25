@@ -12,6 +12,7 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 data = taxistaDAO.selectAll()
 
 
+
 result = DBSCAN(data, 0.05, 5)
 
 clusters = result[0]
