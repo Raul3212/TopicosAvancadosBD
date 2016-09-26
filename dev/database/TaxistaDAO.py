@@ -1,4 +1,5 @@
 from model.Taxista import *
+import numpy as np
 
 class TaxistaDAO:
 	
@@ -22,3 +23,15 @@ class TaxistaDAO:
 		cur.executemany("""INSERT INTO taxistas (id_driver, tempo, longitude, latitude) VALUES (%s, %s, %s,%s)""", vertices)
 		self.__conn.commit()
 		cur.close()
+
+	#retorna [[longitude, latitude)]
+	def selectPositions(self):
+		cur = self.__conn.cursor()
+		cur.execute("""SELECT longitude,latitude FROM taxistas WHERE tempo >= '2008-02-04 12:00:00' AND tempo < '2008-02-04 12:03:00' AND latitude > 35 AND longitude > 114""")
+		rows = cur.fetchall()
+		cur.close()
+		positions = []
+		for row in rows:
+			position = [row[0], row[1]]
+			positions.append(position)
+		return np.matrix(positions)
