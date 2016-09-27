@@ -1,10 +1,15 @@
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 
-
-
 def plot(dataset, clusters, p1, p2):
+
+
+	cores = []
+	for name, code in matplotlib.colors.cnames.iteritems():
+		cores.append(name)
+
 	fig = plt.figure()
 
 	themap = Basemap(projection='gall',
@@ -20,7 +25,7 @@ def plot(dataset, clusters, p1, p2):
 	themap.drawcountries()
 	themap.fillcontinents(color = 'gainsboro')
 	themap.drawmapboundary(fill_color='steelblue')
-	cores = ['Green', 'Blue', 'Red', 'Indigo', 'Black']
+
 	i = 0
 	for cluster in clusters: 
 		for indexTaxista in cluster:
