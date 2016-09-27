@@ -1,6 +1,8 @@
 from preprocess.preprocess import *
 from database.TaxistaDAO import *
+import numpy as np
 from analysis.DBScan import *
+from plotter.plotter import *
 
 #preprocessVertices("data/table_vertices.csv")
 #preprocessTaxistas("data/teste_drive.csv")
@@ -15,18 +17,13 @@ print str(len(data)) + " taxistas"
 result = DBSCAN(data, 0.01, 50)
 
 clusters = result[0]
-'''
-for cluster in clusters:
-	for t in cluster:
-		print data[t].id
-	print "###############################" 
-
-for i in range(len(data)):
-	if result[1][i]:
-		print str(i) + " - " + str(data[i].id)
-'''
 
 print len(clusters)
 
 for cluster in clusters:
 	print len(cluster)
+
+p1 = [116.217,39.5317]
+p2 = [116.873,40.1782]
+
+plot(data, clusters, p1, p2)
