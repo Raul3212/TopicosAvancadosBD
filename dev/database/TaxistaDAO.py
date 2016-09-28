@@ -27,7 +27,7 @@ class TaxistaDAO:
 	#retorna [[longitude, latitude)]
 	def selectPositions(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT longitude,latitude FROM taxistas WHERE tempo >= '2008-02-04 12:00:00' AND tempo < '2008-02-04 12:02:00' AND latitude > 35 AND longitude > 114""")
+		cur.execute("""SELECT longitude,latitude FROM taxistas WHERE latitude > 35 AND longitude > 114""")
 		rows = cur.fetchall()
 		cur.close()
 		positions = []

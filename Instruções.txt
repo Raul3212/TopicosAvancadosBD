@@ -8,3 +8,20 @@ PLOTAR:
     - Latitude: eixo y
 
 http://stackoverflow.com/questions/10775133/best-programming-language-to-implement-dbscan-algorithm-querying-a-mongodb-datab
+
+- Postgis: create extension postgis;
+- QGis: create extension postgis-topology;
+
+- Geometrics
+	- Point
+	- Linestring({x,y})
+
+	create table resultado (clusterid int, taxista_id int, linha geometry);
+	insert into resultado values (0, 2000, true, 'LINESTRING (lon lat, lon lat)')
+
+http://www.paulshapley.com/2016/04/how-to-install-postgresql-95-and.html
+http://www.qgis.org/en/site/
+
+http://gis.stackexchange.com/questions/191681/install-qgis-2-14-essen-on-ubuntu-16-04-xenial
+
+importar shapefile xml do open street map de pequim

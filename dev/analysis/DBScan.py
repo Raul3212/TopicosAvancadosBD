@@ -3,58 +3,77 @@ from model.Taxista import *
 from sets import Set
 from math import pow,sqrt
 
+clusters = []
+n = 0
+visited = []
+noise = []
+inCluster = []
+dataset = None
+eps = 0
+minPts = 0
 
-def DBSCAN(dataset, eps, minPts):
+def DBSCAN(paramDataset, paramEps, paramMinPts):
+	global clusters
+	global dataset
+	global visited
+	global noise
+	global inCluster
+	global eps
+	global minPts
+
+	dataset = paramDataset
+	eps = paramEps
+	minPts = paramMinPts
+
 	clusters = []
 	n = len(dataset)
 	visited = [False] * n
 	noise = [False] * n
 	inCluster = [False] * n
-	for p in range(n):
-		#print "taxista: " + str(p) + " : " +  str(dataset[p].id) 
+	for p in range(n): 
 		if visited[p]:
 			continue
 		visited[p] = True
-		neighborPts,distinctNeighbors = regionQueryMultipleTaxis(p, eps, dataset)
-		#print "vizinhos: " + str(len(neighborPts))
-		if distinctNeighbors < minPts:
+		neighborPts,distinctNeighbors = regionQueryMultipleTaxis(p)
+		if distinctNeighbors < minPts: #Considera apenas taxistas distintos para iniciar um cluster
 			noise[p] = True
 		else: 
 			newCluster = []
 			clusters.append(newCluster)
-			expandCluster(p, neighborPts, newCluster, eps, minPts, dataset, visited, noise, inCluster)
-			#print len(newCluster)
+			expandCluster(p, neighborPts, newCluster)
 	return (clusters, noise)		
 
-def expandCluster(p, neighborPts, cluster, eps, minPts, dataset, visited, noise, inCluster):
+def expandCluster(p, neighborPts, cluster):
+	global dataset
+	global visited
+	global inCluster
+	global eps
+	global minPts
+
 	cluster.append(p)
 	inCluster[p] = True
-	#inThisCluster = {}
-	#inThisCluster[dataset[p].id] = True
 	for i in neighborPts:
-		#print "Vizinho: " + str(i)
 		if visited[i] is not True: 
 			visited[i] = True
-			neighborPtsNew, distinctNeighbors = regionQueryMultipleTaxis(i, eps, dataset)
+			neighborPtsNew, distinctNeighbors = regionQueryMultipleTaxis(i)
 			if len(neighborPtsNew) >= minPts:
 				joinList(neighborPts, neighborPtsNew)
-			#print "Vizinhos: " + str (len (neighborPts))
-		#if dataset[i].id in inThisCluster: # retirar repeticao de taxistas
-		#	inCluster[i] = True
 		if inCluster[i] is not True:
 			cluster.append(i)
 			inCluster[i] = True
-			#inThisCluster[dataset[i].id] = True
-		#print "Cluster: " + str(len(cluster))	
 
-def regionQueryMultipleTaxis (taxistaIndex, eps, dataset):
+def regionQueryMultipleTaxis (taxistaIndex):
+	
+	global dataset
+	global eps
+	
 	neighborPts = []
 	distinctTaxis =  Set()
 	taxista = dataset[taxistaIndex]
 	taxistaIndexNew = taxistaIndex - 1
 	while taxistaIndexNew >= 0: 
 		taxistaNew = dataset[taxistaIndexNew]
-		if taxista.distance(taxistaNew) <= eps: # and taxistaNew.id != taxista.id and taxistaNew.id not in distinctTaxis:
+		if taxista.distance(taxistaNew) <= eps:
 			neighborPts.append(taxistaIndexNew)
 			distinctTaxis.add(taxistaNew.id)
 		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:
@@ -64,7 +83,7 @@ def regionQueryMultipleTaxis (taxistaIndex, eps, dataset):
 	taxistaIndexNew = taxistaIndex + 1
 	while taxistaIndexNew < len(dataset): 
 		taxistaNew = dataset[taxistaIndexNew]
-		if taxista.distance(taxistaNew) <= eps: # and taxistaNew.id != taxista.id and taxistaNew.id not in distinctTaxis:
+		if taxista.distance(taxistaNew) <= eps:
 			neighborPts.append(taxistaIndexNew)
 			distinctTaxis.add(taxistaNew.id)
 		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:

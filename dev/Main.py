@@ -14,7 +14,7 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 data = taxistaDAO.selectAll()
 print str(len(data)) + " taxistas"
 
-result = DBSCAN(data, 0.01, 50)
+result = DBSCAN(data, 0.01, 50) #.run()
 
 clusters = result[0]
 
