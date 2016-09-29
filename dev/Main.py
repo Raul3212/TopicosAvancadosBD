@@ -7,7 +7,9 @@ from plotter.plotter import *
 #preprocessVertices("data/table_vertices.csv")
 #preprocessTaxistas("data/teste_drive.csv")
 #preprocessRotas("data/table_roads.csv")
+preprocessVerticesGIS("data/table_vertices.csv")
 
+'''
 connectionFactory = ConnectionFactory()
 taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 
@@ -26,4 +28,4 @@ for cluster in clusters:
 p1 = [116.217,39.5317]
 p2 = [116.873,40.1782]
 
-plot(data, clusters, p1, p2)
+plot(data, clusters, p1, p2)'''
