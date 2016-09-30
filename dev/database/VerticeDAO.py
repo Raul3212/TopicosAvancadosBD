@@ -15,9 +15,3 @@ class VerticeDAO:
 		cur.executemany("""INSERT INTO vertices (id_vertice, longitude, latitude) VALUES (%s,%s,%s)""", vertices)
 		self.__conn.commit()
 		cur.close()
-
-	def executeManyGIS(self, vertices):
-		cur = self.__conn.cursor()
-		cur.executemany("""INSERT INTO verticesGIS (id_vertice, posicao) VALUES (%s,'POINT(%s %s)')""", vertices)
-		self.__conn.commit()
-		cur.close()

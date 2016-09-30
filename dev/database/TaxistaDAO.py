@@ -6,9 +6,11 @@ class TaxistaDAO:
 	def __init__(self, __conn):
 		self.__conn = __conn
         
-	def selectAll(self):
+	def selectAll(self, timeMin, timeMax):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT id_driver, tempo, latitude, longitude from taxistas where tempo >= '2008-02-04 12:00:00' and tempo < '2008-02-04 12:02:00' order by longitude""")
+		sql = """SELECT id_driver, tempo, latitude, longitude from taxistas where tempo >= '{0}' and tempo < '{1}' and (longitude > 0 and latitude > 0)  order by longitude"""
+		sql = sql.format(timeMin, timeMax)
+		cur.execute(sql)
 		#cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas""")
 		rows = cur.fetchall()
 		cur.close()

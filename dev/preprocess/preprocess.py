@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from database.Connection import *
 from database.VerticeDAO import *
 from database.TaxistaDAO import *
@@ -31,6 +34,8 @@ def group(lst, n):
     if len(val) == n:
       yield tuple(val)
 
+#limit default -1 : lê todas as linhas
+#skiprows default 1: tira a linha de cabeçalho, caso a linha não exista colocar 0
 def iter_loadcsv(filename, dtypes, dtype, condition, delimiter=';', skiprows=1, limit = -1):
     def iter_func():
         with open(filename, 'r') as infile:
@@ -57,9 +62,6 @@ def iter_loadcsv(filename, dtypes, dtype, condition, delimiter=';', skiprows=1, 
     return data
 
 def preprocessVertices(pathCsv):
-    #generate_text_file()
-    #dtypes = [int, convert_date, float, float];
-    #dtype = [('', int), ('', 'datetime64[us]' ), ('', float), ('',float)];
     dtypes = [int, float, float];
     dtype = [('', int), ('', float), ('',float)];
 
@@ -68,28 +70,9 @@ def preprocessVertices(pathCsv):
     connectionFactory = ConnectionFactory()
     verticeDAO = VerticeDAO(connectionFactory.getConnection())
     if(len(data) > 0):
-            verticeDAO.executeMany(data)
-
-def preprocessVerticesGIS(pathCsv):
-    #generate_text_file()
-    #dtypes = [int, convert_date, float, float];
-    #dtype = [('', int), ('', 'datetime64[us]' ), ('', float), ('',float)];
-    dtypes = [int, float, float];
-    dtype = [('', int), ('', float), ('',float)];
-
-    data = iter_loadcsv(pathCsv, dtypes, dtype, default_condition)
-    #print data
-
-    connectionFactory = ConnectionFactory()
-    verticeDAO = VerticeDAO(connectionFactory.getConnection())
-    if(len(data) > 0):
-            verticeDAO.executeManyGIS(data)
-
+        verticeDAO.executeMany(data)
 
 def preprocessTaxistas(pathCsv):
-    #generate_text_file()
-    #dtypes = [int, convert_date, float, float];
-    #dtype = [('', int), ('', 'datetime64[us]' ), ('', float), ('',float)];
 
     dtypes = [int, str, float, float];
     dtype = [('', int), ('', '|S20'), ('', float), ('',float)];
@@ -98,16 +81,10 @@ def preprocessTaxistas(pathCsv):
     connectionFactory = ConnectionFactory()
     taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
     
-    #inicie o skiprows com a ultima linha lida ate o momento
-    skiprows = 1
-    step = 100000
-    while(skiprows < TDRIVELINES):
-        data = iter_loadcsv(pathCsv, dtypes, dtype, date_condition, skiprows = skiprows, limit = step)
-        print data
-        print skiprows
-        if(len(data) > 0):
-            taxistaDAO.executeMany(data)
-        skiprows += step
+    data = iter_loadcsv(pathCsv, dtypes, dtype, date_condition)
+    if(len(data) > 0):
+        taxistaDAO.executeMany(data)
+    skiprows += step
     
 
 def preprocessRotas(pathCsv):
@@ -118,13 +95,7 @@ def preprocessRotas(pathCsv):
 
     connectionFactory = ConnectionFactory()
     rotasDAO = RotasDAO(connectionFactory.getConnection())
-
-    skiprows = 1
-    step = 1000000
-    while(skiprows < TROADSLINES):
-        data = iter_loadcsv(pathCsv, dtypes, dtype, default_condition, skiprows = skiprows, limit = step)
-        print data
-        if(len(data) > 0):
-            rotasDAO.executeMany(data)
-        skiprows += step
+    data = iter_loadcsv(pathCsv, dtypes, dtype, default_condition)
+    if(len(data) > 0):
+        rotasDAO.executeMany(data)
     

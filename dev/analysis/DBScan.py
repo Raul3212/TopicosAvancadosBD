@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from database.TaxistaDAO import *
 from model.Taxista import *
 from sets import Set
@@ -6,7 +9,6 @@ from math import pow,sqrt
 clusters = []
 n = 0
 visited = []
-noise = []
 inCluster = []
 dataset = None
 eps = 0
@@ -16,7 +18,6 @@ def DBSCAN(paramDataset, paramEps, paramMinPts):
 	global clusters
 	global dataset
 	global visited
-	global noise
 	global inCluster
 	global eps
 	global minPts
@@ -28,47 +29,52 @@ def DBSCAN(paramDataset, paramEps, paramMinPts):
 	clusters = []
 	n = len(dataset)
 	visited = [False] * n
-	noise = [False] * n
 	inCluster = [False] * n
+	#Marca todos como outliers no início. Ao ser colocado em um cluster, ele é marcado com o id do cluster e True (é core) ou False (não core)
+	# -1 outlier, 1 ... id do cluster
+	clusters = [(-1, False)] * n
+	qtdClusters = 0
 	for p in range(n): 
 		#print "No " + str(p) + " - Clusters " + str(len(clusters))
 		if visited[p]:
 			continue
 		visited[p] = True
 		neighborPts,distinctNeighbors = regionQueryMultipleTaxis(p)
-		if distinctNeighbors < minPts: #Considera apenas taxistas distintos para iniciar um cluster
-			noise[p] = True
-		else: 
-			newCluster = []
-			clusters.append(newCluster)
-			expandCluster(p, neighborPts, newCluster)
-	return (clusters, noise)		
+		if distinctNeighbors >= minPts: #Considera apenas taxistas distintos para iniciar um cluster
+			qtdClusters+=1
+			expandCluster(p, neighborPts, qtdClusters)
+	return (clusters, qtdClusters)		
 
-def expandCluster(p, neighborPts, cluster):
+def expandCluster(p, neighborPts, clusterId):
+	global clusters
 	global dataset
 	global visited
 	global inCluster
 	global eps
 	global minPts
-	global clusters
 
-	cluster.append(p)
+	clusters[p] = (clusterId, True)
 	inCluster[p] = True
-	aux = 0
+	tamanho = 1
+	#aux = 0
 	for i in neighborPts:
-		aux += 1
+		#aux += 1
 		#print "Vizinho " + str(i) + " - Clusters " + str(len(clusters))
 		#print "Indice " + str(aux) + " - tamanho vizinhos " + str(len(neighborPts))
+		isCore = False
 		if visited[i] is not True: 
 			visited[i] = True
 			neighborPtsNew, distinctNeighbors = regionQueryMultipleTaxis(i)
 			if len(neighborPtsNew) >= minPts:
+				isCore = True
 				for neighbor in neighborPtsNew: 
 					if neighbor not in neighborPts:
 						neighborPts.append(neighbor)
 		if inCluster[i] is not True:
-			cluster.append(i)
+			clusters[i] = (clusterId, isCore)
 			inCluster[i] = True
+			tamanho += 1
+	print tamanho
 
 def regionQueryMultipleTaxis (taxistaIndex):
 	

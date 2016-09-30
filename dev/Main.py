@@ -1,8 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from preprocess.preprocess import *
 from database.TaxistaDAO import *
 import numpy as np
 from analysis.DBScan import *
 from plotter.plotter import *
+from CSVHelper import *
 
 #preprocessVertices("data/table_vertices.csv")
 #preprocessTaxistas("data/teste_drive.csv")
@@ -11,19 +15,27 @@ from plotter.plotter import *
 connectionFactory = ConnectionFactory()
 taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 
-data = taxistaDAO.selectAll()
-print str(len(data)) + " taxistas"
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'), 
+		(2, '2008-02-05 12:00:00', '2008-02-05 13:00:00'), 
+		(3, '2008-02-06 12:00:00', '2008-02-06 13:00:00'), 
+		(4, '2008-02-07 12:00:00', '2008-02-07 13:00:00'), 
+		(5, '2008-02-08 12:00:00', '2008-02-08 13:00:00')]
 
-result = DBSCAN(data, 0.01, 50) #.run()
+for day in days: 
 
-clusters = result[0]
+	data = taxistaDAO.selectAll(day[1], day[2])
+	print str(len(data)) + " taxistas"
 
-print len(clusters)
+	result = DBSCAN(data, 0.01, 50)
+	clusters = result[0]
 
-for cluster in clusters:
-	print len(cluster)
+	print result[1]
 
-p1 = [116.217,39.5317]
-p2 = [116.873,40.1782]
+	writeFile("resultado-" + str(day[0]) + ".csv", clusters, data, day[0])
+		
+	'''
+	p1 = [116.0,39.0]
+	p2 = [117.0,40.500]
 
-#plot(data, clusters, p1, p2)
+	plot(data, clusters, p1, p2)
+	'''
