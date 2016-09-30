@@ -31,7 +31,7 @@ def DBSCAN(paramDataset, paramEps, paramMinPts):
 	visited = [False] * n
 	inCluster = [False] * n
 	#Marca todos como outliers no início. Ao ser colocado em um cluster, ele é marcado com o id do cluster e True (é core) ou False (não core)
-	# -1 outlier, 1 ... id do cluster
+	# -1 outlier (noise), 1 ... id do cluster
 	clusters = [(-1, False)] * n
 	qtdClusters = 0
 	for p in range(n): 
