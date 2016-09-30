@@ -84,7 +84,7 @@ def regionQueryMultipleTaxis (taxistaIndex):
 		if taxista.distance(taxistaNew) <= eps:
 			neighborPts.append(taxistaIndexNew)
 			distinctTaxis.add(taxistaNew.id)
-		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:
+		elif abs(taxista.longitude - taxistaNew.longitude) > eps:
 			break
 		taxistaIndexNew = taxistaIndexNew - 1
 
@@ -94,7 +94,7 @@ def regionQueryMultipleTaxis (taxistaIndex):
 		if taxista.distance(taxistaNew) <= eps:
 			neighborPts.append(taxistaIndexNew)
 			distinctTaxis.add(taxistaNew.id)
-		elif sqrt(pow(taxista.longitude - taxistaNew.longitude,2.0)) > eps:
+		elif abs(taxista.longitude - taxistaNew.longitude) > eps:
 			break
 		taxistaIndexNew = taxistaIndexNew + 1
 	return neighborPts, len(distinctTaxis) 

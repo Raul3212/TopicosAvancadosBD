@@ -70,6 +70,22 @@ def preprocessVertices(pathCsv):
     if(len(data) > 0):
             verticeDAO.executeMany(data)
 
+def preprocessVerticesGIS(pathCsv):
+    #generate_text_file()
+    #dtypes = [int, convert_date, float, float];
+    #dtype = [('', int), ('', 'datetime64[us]' ), ('', float), ('',float)];
+    dtypes = [int, float, float];
+    dtype = [('', int), ('', float), ('',float)];
+
+    data = iter_loadcsv(pathCsv, dtypes, dtype, default_condition)
+    #print data
+
+    connectionFactory = ConnectionFactory()
+    verticeDAO = VerticeDAO(connectionFactory.getConnection())
+    if(len(data) > 0):
+            verticeDAO.executeManyGIS(data)
+
+
 def preprocessTaxistas(pathCsv):
     #generate_text_file()
     #dtypes = [int, convert_date, float, float];

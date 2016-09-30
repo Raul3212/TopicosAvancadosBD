@@ -10,7 +10,7 @@ PLOTAR:
 http://stackoverflow.com/questions/10775133/best-programming-language-to-implement-dbscan-algorithm-querying-a-mongodb-datab
 
 - Postgis: create extension postgis;
-- QGis: create extension postgis-topology;
+- QGis: create extension postgis_topology;
 
 - Geometrics
 	- Point
