@@ -14,7 +14,7 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 data = taxistaDAO.selectAll()
 print str(len(data)) + " taxistas"
 
-result = DBSCAN(data, 0.01, 50) #.run()
+result = DBSCAN(data, 0.0001, 50) #.run()
 
 clusters = result[0]
 
@@ -26,4 +26,4 @@ for cluster in clusters:
 p1 = [116.217,39.5317]
 p2 = [116.873,40.1782]
 
-plot(data, clusters, p1, p2)
+#plot(data, clusters, p1, p2)

@@ -31,6 +31,7 @@ def DBSCAN(paramDataset, paramEps, paramMinPts):
 	noise = [False] * n
 	inCluster = [False] * n
 	for p in range(n): 
+		#print "No " + str(p) + " - Clusters " + str(len(clusters))
 		if visited[p]:
 			continue
 		visited[p] = True
@@ -49,15 +50,22 @@ def expandCluster(p, neighborPts, cluster):
 	global inCluster
 	global eps
 	global minPts
+	global clusters
 
 	cluster.append(p)
 	inCluster[p] = True
+	aux = 0
 	for i in neighborPts:
+		aux += 1
+		#print "Vizinho " + str(i) + " - Clusters " + str(len(clusters))
+		#print "Indice " + str(aux) + " - tamanho vizinhos " + str(len(neighborPts))
 		if visited[i] is not True: 
 			visited[i] = True
 			neighborPtsNew, distinctNeighbors = regionQueryMultipleTaxis(i)
 			if len(neighborPtsNew) >= minPts:
-				joinList(neighborPts, neighborPtsNew)
+				for neighbor in neighborPtsNew: 
+					if neighbor not in neighborPts:
+						neighborPts.append(neighbor)
 		if inCluster[i] is not True:
 			cluster.append(i)
 			inCluster[i] = True
@@ -91,7 +99,7 @@ def regionQueryMultipleTaxis (taxistaIndex):
 		taxistaIndexNew = taxistaIndexNew + 1
 	return neighborPts, len(distinctTaxis) 
 			
-def joinList(mainList, secondaryList):
-	for i in secondaryList:
-		if i not in mainList:
-			mainList.append(i)
+#def joinList(mainList, secondaryList):
+#	for i in secondaryList:
+#		if i not in mainList:
+#				mainList.append(i)
