@@ -18,39 +18,49 @@ connectionFactory = ConnectionFactory()
 taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 verticeDAO = VerticeDAO(connectionFactory.getConnection())
 
-days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:00:00'), 
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'), 
 		(2, '2008-02-05 12:00:00', '2008-02-05 12:00:00'), 
 		(3, '2008-02-06 12:00:00', '2008-02-06 12:00:00'), 
 		(4, '2008-02-07 12:00:00', '2008-02-07 12:00:00'), 
 		(5, '2008-02-08 12:00:00', '2008-02-08 12:00:00')]
+
+
+vertices = verticeDAO.selectAll()
+print "Vertices : " + str(len(vertices))
 
 for day in days: 
 
 	'''
 	Pegar pontos distintos de cada taxista. 
 	Caso um taxista tenho duas entradas com a mesma localização, será considerada apenas uma delas e o maior valor da coluna tempo
+	-----------------------
+
+	muito custoso para o banco
+	utilizando estratégia para manter dados em memória	
+	'''
+	
 	'''
 	positions = taxistaDAO.selectPositions(day[1], day[2])
-	vertices = verticeDAO.selectAll()
-
 	batchPoints = mapMatching(positions, vertices)
 
 	print "MapMatching finalizado!"
 	print batchPoints
+	
 	taxistaDAO.updatePontos(batchPoints)
-
-	#taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
-
-	#Atualizar pontos no banco	
-
 	'''
-	result = DBSCAN(taxistas, 0.01, 50)
-	clusters = result[0]
 
-	print result[1]
+	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
+	print "Taxistas : " + str(len(taxistas))
+	mapMatchingTaxistas(taxistas, vertices)
 
-	writeFile("resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
-	'''
+	
+	#result = DBSCAN(taxistas, 0.0001, 50)
+	#clusters = result[0]
+
+	#print result[1]
+
+	#writeFile("resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	
 
 	'''
 	p1 = [116.0,39.0]
