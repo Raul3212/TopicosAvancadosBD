@@ -11,6 +11,8 @@ class RotasDAO:
 		return vertices
 
 	def executeMany(self, rotas):
+		if(rotas == None):
+			return 
 		cur = self.__conn.cursor()
 		cur.executemany("""INSERT INTO rotas (id_edge, id_source, id_target, cost) VALUES (%s,%s,%s,%s)""", rotas)
 		self.__conn.commit()

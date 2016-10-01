@@ -17,6 +17,8 @@ class VerticeDAO:
 		return vertices
 
 	def executeMany(self, vertices):
+		if(vertices == None):
+			return 
 		cur = self.__conn.cursor()
 		cur.executemany("""INSERT INTO vertices (id_vertice, longitude, latitude) VALUES (%s,%s,%s)""", vertices)
 		self.__conn.commit()
