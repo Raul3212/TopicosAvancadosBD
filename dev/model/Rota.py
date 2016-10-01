@@ -1,4 +1,4 @@
-class Road:
+class Rota:
     def __init__(self, id, source, target, cost):
         self.id = id
         self.source = source

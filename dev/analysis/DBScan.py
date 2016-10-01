@@ -74,8 +74,9 @@ def expandCluster(p, neighborPts, clusterId):
 			clusters[i] = (clusterId, isCore)
 			inCluster[i] = True
 			tamanho += 1
-	print tamanho
+	print "Novo cluster com tamanho : " + str(tamanho)
 
+# global dataset precisa estar ordenado pela longitude para o método funcionar devidamente
 def regionQueryMultipleTaxis (taxistaIndex):
 	
 	global dataset
