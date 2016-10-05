@@ -18,7 +18,7 @@ connectionFactory = ConnectionFactory()
 taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 verticeDAO = VerticeDAO(connectionFactory.getConnection())
 
-days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'), 
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:02:00'), 
 		(2, '2008-02-05 12:00:00', '2008-02-05 12:00:00'), 
 		(3, '2008-02-06 12:00:00', '2008-02-06 12:00:00'), 
 		(4, '2008-02-07 12:00:00', '2008-02-07 12:00:00'), 
@@ -51,15 +51,15 @@ for day in days:
 
 	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
 	print "Taxistas : " + str(len(taxistas))
-	mapMatchingTaxistas(taxistas, vertices)
+	#mapMatchingTaxistas(taxistas, vertices)
 
 	
-	#result = DBSCAN(taxistas, 0.0001, 50)
-	#clusters = result[0]
+	result = DBSCAN(taxistas, 0.003, 50)
+	clusters = result[0]
 
-	#print result[1]
+	print result[1]
 
-	#writeFile("resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	writeFile("resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 	
 
 	'''

@@ -3,7 +3,10 @@
 
 import csv
 
+matricula = "358307"
+
 def writeFile(filename, clusters, dataset, weekday):
+	global matricula
 	with open(filename, 'wb') as csvfile:		
 		spamwriter = csv.writer(csvfile, delimiter=';')
 		header = ['student_id', 'id_taxista', 'weekday', 'latitude', 'longitude', 'cluster', 'iscore']
@@ -12,7 +15,7 @@ def writeFile(filename, clusters, dataset, weekday):
 			clusterId, isCore = clusters[taxistaIndex]
 			taxista = dataset[taxistaIndex]
 			row = []
-			row.append("358307")
+			row.append(matricula) # Colocar como variável global
 			row.append(taxista.id)
 			row.append(weekday)
 			row.append(taxista.latitude)

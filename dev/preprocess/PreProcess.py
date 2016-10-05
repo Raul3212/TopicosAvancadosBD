@@ -77,7 +77,6 @@ def preprocessTaxistas(pathCsv):
     dtypes = [int, str, float, float];
     dtype = [('', int), ('', '|S20'), ('', float), ('',float)];
     
-
     connectionFactory = ConnectionFactory()
     taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
     
@@ -91,7 +90,6 @@ def preprocessRotas(pathCsv):
     
     dtypes = [int, int, int, float];
     dtype = [('', int), ('', int), ('', int), ('',float)];
-    
 
     connectionFactory = ConnectionFactory()
     rotasDAO = RotasDAO(connectionFactory.getConnection())

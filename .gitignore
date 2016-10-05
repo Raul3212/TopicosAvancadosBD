@@ -91,3 +91,6 @@ ENV/
 # Data
 
 data/
+
+# Resultados da clusterização
+dev/*.csv
