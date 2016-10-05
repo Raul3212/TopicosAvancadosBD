@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from model.Rota import *
+
 class RotasDAO:
 	
 	def __init__(self, __conn):
@@ -5,10 +10,14 @@ class RotasDAO:
         
 	def selectAll(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT * from rotas""")
-		vertices = cur.fetchall()
+		cur.execute("""SELECT id_edge, id_source, id_target, cost from rotas""")
+		rows = cur.fetchall()
 		cur.close()
-		return vertices
+		rotas = []
+		for row in rows:
+			rota = Rota(row[0],row[1],row[2],row[3])
+			rotas.append(rota)
+		return rotas
 
 	def executeMany(self, rotas):
 		if(rotas == None):
