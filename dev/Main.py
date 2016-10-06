@@ -23,17 +23,13 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 verticeDAO = VerticeDAO(connectionFactory.getConnection())
 rotasDAO = RotasDAO(connectionFactory.getConnection())
 
-'''
 days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'), 
 		(2, '2008-02-05 12:00:00', '2008-02-05 13:00:00'), 
 		(3, '2008-02-06 12:00:00', '2008-02-06 13:00:00'), 
 		(4, '2008-02-07 12:00:00', '2008-02-07 13:00:00'), 
 		(5, '2008-02-08 12:00:00', '2008-02-08 13:00:00')]
+
 '''
-
-days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:02:00')]
-
-
 vertices = verticeDAO.selectAll()
 print "Vertices : " + str(len(vertices))
 rotas = rotasDAO.selectAll()
@@ -43,6 +39,7 @@ rede = Graph(vertices)
 for rota in rotas:
 	#print str(rota.source) + " - " + str(rota.target) + " - " + str(rota.cost)
 	rede.addEdge(rota.source, rota.target, rota.cost)
+'''
 for day in days: 
 
 	'''
@@ -65,26 +62,36 @@ for day in days:
 	'''
 
 	
-	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
+	taxistas = taxistaDAO.selectAll(day[1], day[2])
 	print "Taxistas : " + str(len(taxistas))
 	
-	mapMatchingTaxistas(taxistas, vertices)
+	#mapMatchingTaxistas(taxistas, vertices)
 
-	result = DBSCANRede(taxistas, 0.01, 10, rede)
+	result = DBSCAN(taxistas, 0.003, 50)
 	clusters = result[0]
 	print result[1]
-	
+	writeFile("resultados/resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+		
 
 	#teste do dijkstra
 	#vizinhos = DijkstraModificado(rede, 29989, 0.01).run()
 	#print len(vizinhos)
 	
-	#result = DBSCAN(taxistas, 0.003, 50)
+	#result = DBSCANRede(taxistas, 0.01, 10, rede)
 	#clusters = result[0]
-
 	#print result[1]
+	
+	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
+	print "Taxistas : " + str(len(taxistas))
+	
+	#mapMatchingTaxistas(taxistas, vertices)
 
-	#writeFile("resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	result = DBSCAN(taxistas, 0.003, 50)
+	clusters = result[0]
+	print result[1]
+
+	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	
 	
 
 	'''
