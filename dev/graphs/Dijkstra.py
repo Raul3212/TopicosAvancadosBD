@@ -61,9 +61,11 @@ class DijkstraModificado:
             # em achar vizinhos do vértice na rede dentro de um valor eps.
             # Caso a distância para um vértice já seja maior que eps, 
             # então o relaxamento dos seus filhos também será,
-            # sendo assim a relaxação dos filhos é descartada
+            # sendo assim a relaxação dos filhos é descartada.
+            # Além disso, podemos parar a execução, pois a min heap garante 
+            # que os elementos restantes na heap terão distância maior  
             if self.d[u] > self.eps: 
-                continue
+                break
             for (v, w) in self.graph.getAdj(u):
                 if not self.visitados[v]:
                     heappush(self.heap, (self.d[v], v))

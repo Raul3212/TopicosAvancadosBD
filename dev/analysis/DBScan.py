@@ -85,7 +85,17 @@ def regionQueryMultipleTaxis (taxistaIndex):
 	neighborPts = []
 	distinctTaxis =  Set()
 	taxista = dataset[taxistaIndex]
-	taxistaIndexNew = taxistaIndex - 1
+	
+	'''
+	for taxistaIndexNew in range(len(dataset)):
+		taxistaNew = dataset[taxistaIndexNew]
+		if taxista.distance(taxistaNew) <= eps:
+			neighborPts.append(taxistaIndexNew)
+			distinctTaxis.add(taxistaNew.id)
+
+	'''		
+	# Utilizando corte
+	taxistaIndexNew = taxistaIndex
 	while taxistaIndexNew >= 0: 
 		taxistaNew = dataset[taxistaIndexNew]
 		if taxista.distance(taxistaNew) <= eps:
@@ -104,6 +114,8 @@ def regionQueryMultipleTaxis (taxistaIndex):
 		elif abs(taxista.longitude - taxistaNew.longitude) > eps:
 			break
 		taxistaIndexNew = taxistaIndexNew + 1
+		
+
 	return neighborPts, len(distinctTaxis) 
 			
 #def joinList(mainList, secondaryList):

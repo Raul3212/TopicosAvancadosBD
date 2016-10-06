@@ -15,6 +15,7 @@ dataset = None
 eps = 0
 minPts = 0
 rede = None
+cache = {}
 
 def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 	global clusters
@@ -39,12 +40,12 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 	clusters = [(-1, False)] * n
 	qtdClusters = 0
 	for p in range(n): 
-		print "No " + str(p) + " - Clusters " + str(qtdClusters)
+		#print "No " + str(p) + " - Clusters " + str(qtdClusters)
 		if visited[p]:
 			continue
 		visited[p] = True
 		neighborPts,distinctNeighbors = regionQueryRede(p)
-		print distinctNeighbors
+		#print distinctNeighbors
 		if distinctNeighbors >= minPts: #Considera apenas taxistas distintos para iniciar um cluster
 			qtdClusters+=1
 			expandClusterRede(p, neighborPts, qtdClusters)
@@ -87,32 +88,47 @@ def regionQueryRede (taxistaIndex):
 	global dataset
 	global eps
 	global rede
+	global cache
 
 	neighborPts = []
 	distinctTaxis =  Set()
 	taxista = dataset[taxistaIndex]
-	vizinhos = DijkstraModificado(rede, taxista.vertice, eps).run()
-	#print vizinhos
-	taxistaIndexNew = taxistaIndex - 1
-	while taxistaIndexNew >= 0: 
-		taxistaNew = dataset[taxistaIndexNew]
-		if taxistaNew.vertice in vizinhos:
-			neighborPts.append(taxistaIndexNew)
-			distinctTaxis.add(taxistaNew.id)
-		elif abs(taxista.longitude - taxistaNew.longitude) > eps:
-			break
-		taxistaIndexNew = taxistaIndexNew - 1
+	vizinhos = []
+	if taxista.vertice not in cache:
+		vizinhos = DijkstraModificado(rede, taxista.vertice, eps).run()
+		cache[taxista.vertice] = vizinhos
+		
+		'''
+		for taxistaIndexNew in range(len(dataset)):
+			taxistaNew = dataset[taxistaIndexNew]
+			if taxistaNew.vertice in vizinhos:
+				neighborPts.append(taxistaIndexNew)
+				distinctTaxis.add(taxistaNew.id)
+		'''
+		# Utilizando corte
+		# Se a distância euclidiana for maior que eps, então a distância em rede também será	
+		taxistaIndexNew = taxistaIndex
+		while taxistaIndexNew >= 0: 
+			taxistaNew = dataset[taxistaIndexNew]
+			if taxistaNew.vertice in vizinhos:
+				neighborPts.append(taxistaIndexNew)
+				distinctTaxis.add(taxistaNew.id)
+			elif abs(taxista.longitude - taxistaNew.longitude) > eps:
+				break
+			taxistaIndexNew = taxistaIndexNew - 1
 
-	taxistaIndexNew = taxistaIndex + 1
-	while taxistaIndexNew < len(dataset): 
-		taxistaNew = dataset[taxistaIndexNew]
-		if taxistaNew.vertice in vizinhos:
-			neighborPts.append(taxistaIndexNew)
-			distinctTaxis.add(taxistaNew.id)
-		elif abs(taxista.longitude - taxistaNew.longitude) > eps:
-			break
-		taxistaIndexNew = taxistaIndexNew + 1
-	return neighborPts, len(distinctTaxis) 
+		taxistaIndexNew = taxistaIndex + 1
+		while taxistaIndexNew < len(dataset): 
+			taxistaNew = dataset[taxistaIndexNew]
+			if taxistaNew.vertice in vizinhos:
+				neighborPts.append(taxistaIndexNew)
+				distinctTaxis.add(taxistaNew.id)
+			elif abs(taxista.longitude - taxistaNew.longitude) > eps:
+				break
+			taxistaIndexNew = taxistaIndexNew + 1
+			
+		cache[taxista.vertice] = (neighborPts, len(distinctTaxis))
+	return cache[taxista.vertice]
 			
 #def joinList(mainList, secondaryList):
 #	for i in secondaryList:
