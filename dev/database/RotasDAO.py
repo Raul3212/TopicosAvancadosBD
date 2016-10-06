@@ -7,7 +7,8 @@ class RotasDAO:
 	
 	def __init__(self, __conn):
 		self.__conn = __conn
-        
+       
+    #ordenação opcional
 	def selectAll(self):
 		cur = self.__conn.cursor()
 		cur.execute("""SELECT id_edge, id_source, id_target, cost from rotas order by cost""")

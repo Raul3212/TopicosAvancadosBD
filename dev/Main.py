@@ -29,7 +29,7 @@ days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'),
 		(4, '2008-02-07 12:00:00', '2008-02-07 13:00:00'), 
 		(5, '2008-02-08 12:00:00', '2008-02-08 13:00:00')]
 
-'''
+
 vertices = verticeDAO.selectAll()
 print "Vertices : " + str(len(vertices))
 rotas = rotasDAO.selectAll()
@@ -39,7 +39,7 @@ rede = Graph(vertices)
 for rota in rotas:
 	#print str(rota.source) + " - " + str(rota.target) + " - " + str(rota.cost)
 	rede.addEdge(rota.source, rota.target, rota.cost)
-'''
+
 for day in days: 
 
 	'''
@@ -62,37 +62,37 @@ for day in days:
 	'''
 
 	
-	taxistas = taxistaDAO.selectAll(day[1], day[2])
+	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
 	print "Taxistas : " + str(len(taxistas))
 	
-	#mapMatchingTaxistas(taxistas, vertices)
-
+	mapMatchingTaxistas(taxistas, vertices)
+	print "Map Matching Feito!"
+	
+	'''
 	result = DBSCAN(taxistas, 0.003, 50)
 	clusters = result[0]
 	print result[1]
-	writeFile("resultados/resultado-" + str(day[0]) + ".csv", clusters, taxistas, day[0])
-		
+	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	'''
 
 	#teste do dijkstra
 	#vizinhos = DijkstraModificado(rede, 29989, 0.01).run()
 	#print len(vizinhos)
 	
-	#result = DBSCANRede(taxistas, 0.01, 10, rede)
-	#clusters = result[0]
-	#print result[1]
-	
-	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
-	print "Taxistas : " + str(len(taxistas))
-	
-	#mapMatchingTaxistas(taxistas, vertices)
-
-	result = DBSCAN(taxistas, 0.003, 50)
+	result = DBSCANRede(taxistas, 0.003, 50, rede)
 	clusters = result[0]
 	print result[1]
+	
+	
+	writeFile("resultados/v1-resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	
+	result = DBSCANRede(taxistas, 0.005, 25, rede)
+	clusters = result[0]
+	print result[1]
+	
+	
+	writeFile("resultados/v2-resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 
-	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
-	
-	
 
 	'''
 	p1 = [116.0,39.0]
