@@ -23,3 +23,10 @@ class VerticeDAO:
 		cur.executemany("""INSERT INTO vertices (id_vertice, longitude, latitude) VALUES (%s,%s,%s)""", vertices)
 		self.__conn.commit()
 		cur.close()
+
+	def selectVerticesId(self):
+		cur = self.__conn.cursor()
+		cur.execute("""SELECT id_vertice from vertices order by longitude""")
+		rows = cur.fetchall()
+		cur.close()
+		return rows

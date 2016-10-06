@@ -3,7 +3,7 @@ class Graph:
         self.numVertices = len(vertices)
         self.adjList = {}
         for vertice in vertices:
-            self.adjList[vertice] = []
+            self.adjList[vertice.id] = []
 
     def addVertex(self, vertice):
         self.numVertices += 1

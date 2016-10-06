@@ -69,5 +69,5 @@ class DijkstraModificado:
                     heappush(self.heap, (self.d[v], v))
                     self.visitados[v] = True                        
                 self.relax(u, v, w)
-        return (self.p, self.d, self.vizinhos)
+        return self.vizinhos
 

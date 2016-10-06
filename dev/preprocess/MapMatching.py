@@ -69,7 +69,7 @@ def mapMatchingTaxistas(taxistas, vertices):
 				taxista.setVertice(vertice.id)	
 			elif (abs(vertice.longitude - taxista.longitude) > minDist): #caso a lista esteja ordenada pela longitude
 				break
-		print str(taxista.longitude) + " - " + str(taxista.latitude) + " - " + str(taxista.vertice)
+		#print str(taxista.longitude) + " - " + str(taxista.latitude) + " - " + str(taxista.vertice)
 	return taxistas
 
 def distance(ponto, vertice):

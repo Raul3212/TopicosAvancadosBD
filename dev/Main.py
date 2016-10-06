@@ -8,8 +8,11 @@ from database.VerticeDAO import *
 from database.RotasDAO import *
 import numpy as np
 from analysis.DBScan import *
+from analysis.DBScanRede import *
 from plotter.plotter import *
 from CSVHelper import *
+from graphs.Graph import *
+from graphs.Dijkstra import *
 
 #preprocessVertices("data/table_vertices.csv")
 #preprocessTaxistas("data/teste_drive.csv")
@@ -20,11 +23,15 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 verticeDAO = VerticeDAO(connectionFactory.getConnection())
 rotasDAO = RotasDAO(connectionFactory.getConnection())
 
-days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:00:00'), 
+'''
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:01:00'), 
 		(2, '2008-02-05 12:00:00', '2008-02-05 12:00:00'), 
 		(3, '2008-02-06 12:00:00', '2008-02-06 12:00:00'), 
 		(4, '2008-02-07 12:00:00', '2008-02-07 12:00:00'), 
 		(5, '2008-02-08 12:00:00', '2008-02-08 12:00:00')]
+'''
+
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:01:00')]
 
 
 vertices = verticeDAO.selectAll()
@@ -54,9 +61,19 @@ for day in days:
 
 	taxistas = taxistaDAO.selectAllDistinct(day[1], day[2])
 	print "Taxistas : " + str(len(taxistas))
+	rede = Graph(vertices)
+	for rota in rotas:
+		#print str(rota.source) + " - " + str(rota.target) + " - " + str(rota.cost)
+		rede.addEdge(rota.source, rota.target, rota.cost)
 	mapMatchingTaxistas(taxistas, vertices)
 
+	result = DBSCANRede(taxistas, 0.1, 10, rede)
+	clusters = result[0]
+	print result[1]
 
+	#teste do dijkstra
+	#vizinhos = DijkstraModificado(rede, 29989, 0.01).run()
+	#print vizinhos
 	
 	#result = DBSCAN(taxistas, 0.003, 50)
 	#clusters = result[0]

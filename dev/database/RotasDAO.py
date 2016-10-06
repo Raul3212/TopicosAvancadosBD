@@ -10,7 +10,7 @@ class RotasDAO:
         
 	def selectAll(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT id_edge, id_source, id_target, cost from rotas""")
+		cur.execute("""SELECT id_edge, id_source, id_target, cost from rotas order by cost""")
 		rows = cur.fetchall()
 		cur.close()
 		rotas = []
