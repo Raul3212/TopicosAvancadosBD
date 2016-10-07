@@ -23,11 +23,11 @@ taxistaDAO = TaxistaDAO(connectionFactory.getConnection())
 verticeDAO = VerticeDAO(connectionFactory.getConnection())
 rotasDAO = RotasDAO(connectionFactory.getConnection())
 
-days = [(1, '2008-02-04 12:00:00', '2008-02-04 12:01:00'), 
-		(2, '2008-02-05 12:00:00', '2008-02-05 12:00:00'), 
-		(3, '2008-02-06 12:00:00', '2008-02-06 12:00:00'), 
-		(4, '2008-02-07 12:00:00', '2008-02-07 12:00:00'), 
-		(5, '2008-02-08 12:00:00', '2008-02-08 12:00:00')]
+days = [(1, '2008-02-04 12:00:00', '2008-02-04 13:00:00'), 
+		(2, '2008-02-05 12:00:00', '2008-02-05 13:00:00'), 
+		(3, '2008-02-06 12:00:00', '2008-02-06 13:00:00'), 
+		(4, '2008-02-07 12:00:00', '2008-02-07 13:00:00'), 
+		(5, '2008-02-08 12:00:00', '2008-02-08 13:00:00')]
 
 
 vertices = verticeDAO.selectAll()
@@ -66,39 +66,33 @@ for day in days:
 	print "Taxistas : " + str(len(taxistas))
 	
 	mapMatchingTaxistas(taxistas, vertices)
-	for taxista in taxistas:
-		print str(taxista.id) + " - " + str(taxista.vertice)
-
+	print "Map Matching realizado!"
 	'''
 	result = DBSCAN(taxistas, 0.003, 50)
 	clusters = result[0]
-	print result[1]
+	qtdClusters = result[1]
 	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 	'''
-
-	#teste do dijkstra
-	#vizinhos = DijkstraModificado(rede, 29989, 0.01).run()
-	#print len(vizinhos)
 	
-	'''
-	result = DBSCANRede(taxistas, 0.003, 50, rede)
+	
+	result = DBSCANRede(taxistas, 0.01, 50, rede)
 	clusters = result[0]
 	print result[1]
 	
 	
 	writeFile("resultados/v1-resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 	
-	result = DBSCANRede(taxistas, 0.005, 25, rede)
+	result = DBSCANRede(taxistas, 0.000005, 25, rede)
 	clusters = result[0]
 	print result[1]
 	
 	
 	writeFile("resultados/v2-resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	
 	'''
-
-	'''
+	# PLotando resultado
 	p1 = [116.0,39.0]
 	p2 = [117.0,40.500]
 
-	plot(taxistas, clusters, p1, p2)
+	plot(taxistas, clusters, qtdClusters,  p1, p2)
 	'''

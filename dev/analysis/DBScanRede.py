@@ -96,8 +96,7 @@ def regionQueryRede (taxistaIndex):
 	vizinhos = []
 	if taxista.vertice not in cache:
 		vizinhos = DijkstraModificado(rede, taxista.vertice, eps).run()
-		cache[taxista.vertice] = vizinhos
-		
+				
 		'''
 		for taxistaIndexNew in range(len(dataset)):
 			taxistaNew = dataset[taxistaIndexNew]

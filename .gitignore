@@ -94,3 +94,5 @@ data/
 
 # Resultados da clusterização
 dev/*.csv
+dev/**/*.csv
+dev/resultados

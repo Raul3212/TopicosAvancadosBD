@@ -3,8 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 
-def plot(dataset, clusters, p1, p2):
-
+def plot(dataset, clusters, qtdClusters, p1, p2):
 
 	cores = []
 	for name, code in matplotlib.colors.cnames.iteritems():
@@ -26,17 +25,17 @@ def plot(dataset, clusters, p1, p2):
 	themap.fillcontinents(color = 'gainsboro')
 	themap.drawmapboundary(fill_color='steelblue')
 
-	i = 0
-	for cluster in clusters: 
-		for indexTaxista in cluster:
-			taxista = dataset[indexTaxista]
+
+	for indexTaxista in range(len(clusters)): 
+		taxista = dataset[indexTaxista]
+		clusterValue = clusters[indexTaxista]
+		if clusterValue[0] != -1:
 			x,y = themap(taxista.longitude, taxista.latitude) 
 			themap.plot(x,y, 
 	            'o',                    # marker shape
-	            color=cores[i % len(cores)],         # marker colour
+	            color=cores[clusterValue[0] % qtdClusters],         # marker colour
 	            markersize=4            # marker size
 	            )
-		i=i+1
 
 	themap.llcrnrlon = p1[0]
 	themap.llcrnrlat = p1[1]
