@@ -4,7 +4,6 @@
 from Graph import *
 from heapq import *
 
-
 # 'heap' is a heap at all indices >= startpos, except possibly for pos.  pos
 # is the index of a leaf with a possibly out-of-order value.  Restore the
 # heap invariant.

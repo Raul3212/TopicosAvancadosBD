@@ -16,8 +16,8 @@ def mapMatching(pontos, vertices):
 		verticeInicial = vertices[0] 
 		verticeFinal = vertices[qtdVertices-1]
 		iterator = range(qtdVertices)
-		distVerticeInicial = distance(ponto, verticeInicial)
-		distVerticeFinal = distance(ponto, verticeFinal)
+		distVerticeInicial = distancia(ponto, verticeInicial)
+		distVerticeFinal = distancia(ponto, verticeFinal)
 		minDist = distVerticeInicial
 		ponto.setVerticeProximo(verticeInicial.id)
 		if(distVerticeFinal < distVerticeInicial):
@@ -28,7 +28,7 @@ def mapMatching(pontos, vertices):
 		iterator.pop() #remove último elemento
 		for verticeIndex in iterator:
 			vertice = vertices[verticeIndex]
-			dist = distance(ponto, vertice)
+			dist = distancia(ponto, vertice)
 			if(dist < minDist):
 				minDist = dist
 				ponto.setVerticeProximo(vertice.id)	
@@ -47,23 +47,24 @@ def mapMatchingTaxistas(taxistas, vertices):
 	qtdTaxistas = len(taxistas)
 	if(qtdVertices == 0 or qtdTaxistas == 0): 
 		return
+	indexTaxistas = range(1, qtdVertices-1, 1) #excluindo o vértice inicial e final
+	indexTaxistasInvertido = range(qtdVertices-2, 0, -1) #excluindo o vértice inicial e final - colocando a lista invertida  
 	for taxista in taxistas:
 		verticeInicial = vertices[0] 
 		verticeFinal = vertices[qtdVertices-1]
-		iterator = range(qtdVertices)
-		distVerticeInicial = distance(taxista, verticeInicial)
-		distVerticeFinal = distance(taxista, verticeFinal)
+		distVerticeInicial = distancia(taxista, verticeInicial)
+		distVerticeFinal = distancia(taxista, verticeFinal)
 		minDist = distVerticeInicial
 		taxista.setVertice(verticeInicial.id)
 		if(distVerticeFinal < distVerticeInicial):
-			iterator.reverse()
+			iterator = indexTaxistasInvertido
 			minDist = distVerticeFinal
 			taxista.setVertice(verticeFinal.id)
-		iterator.pop(0) #remove primeiro elemento
-		iterator.pop() #remove último elemento
+		else:
+			iterator = indexTaxistas
 		for verticeIndex in iterator:
 			vertice = vertices[verticeIndex]
-			dist = distance(taxista, vertice)
+			dist = distancia(taxista, vertice)
 			if(dist < minDist):
 				minDist = dist
 				taxista.setVertice(vertice.id)	
@@ -72,5 +73,5 @@ def mapMatchingTaxistas(taxistas, vertices):
 		#print str(taxista.longitude) + " - " + str(taxista.latitude) + " - " + str(taxista.vertice)
 	return taxistas
 
-def distance(ponto, vertice):
+def distancia(ponto, vertice):
 	return sqrt (pow((vertice.latitude - ponto.latitude),2.0) + pow((vertice.longitude - ponto.longitude),2.0))
