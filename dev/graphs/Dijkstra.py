@@ -32,6 +32,7 @@ class DijkstraModificado:
         self.d = {}
         self.eps = eps
         self.vizinhos = set()
+        self.vizinhos.add(s) #considerando que o vértice é vizinho dele próprio, útil para o DBSCAN 
         self.visitados = [False] * graph.getNumVertices()
         self.heap = []
         for n in graph.getVertices():

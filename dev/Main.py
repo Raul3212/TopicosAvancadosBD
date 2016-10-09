@@ -74,15 +74,14 @@ for day in days:
 	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 	'''
 	
-	
-	result = DBSCANRede(taxistas, 0.01, 50, rede)
+	result = DBSCANRede(taxistas, 0.01, 25, rede)
 	clusters = result[0]
 	print result[1]
 	
 	
 	writeFile("resultados/v1-resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 	
-	result = DBSCANRede(taxistas, 0.000005, 25, rede)
+	result = DBSCANRede(taxistas, 0.003, 50, rede)
 	clusters = result[0]
 	print result[1]
 	
