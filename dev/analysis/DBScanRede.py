@@ -47,8 +47,9 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 		neighborPts,distinctNeighbors = regionQueryRede(p)
 		#print distinctNeighbors
 		if distinctNeighbors >= minPts: #Considera apenas taxistas distintos para iniciar um cluster
-			qtdClusters+=1
-			expandClusterRede(p, neighborPts, qtdClusters)
+			isNew = expandClusterRede(p, neighborPts, qtdClusters)
+			if isNew:
+				qtdClusters+=1
 	return (clusters, qtdClusters)		
 
 def expandClusterRede(p, neighborPts, clusterId):
@@ -58,6 +59,8 @@ def expandClusterRede(p, neighborPts, clusterId):
 	global inCluster
 	global eps
 	global minPts
+
+	currentClusterIndexes = []
 
 	clusters[p] = (clusterId, True)
 	inCluster[p] = True
@@ -78,9 +81,18 @@ def expandClusterRede(p, neighborPts, clusterId):
 						neighborPts.append(neighbor)
 		if inCluster[i] is not True:
 			clusters[i] = (clusterId, isCore)
+			currentClusterIndexes.append(i)
 			inCluster[i] = True
 			tamanho += 1
-	print "Novo cluster com tamanho : " + str(tamanho)
+	if tamanho < minPts: 
+		#marcando como noise os clusters que tem menos que minPts
+		for index in currentClusterIndexes:
+			clusters[index] = (-1, False)
+			inCluster[index] = False
+		return False
+	else:
+		print "Novo cluster com tamanho : " + str(tamanho)
+		return True
 
 # global dataset precisa estar ordenado pela longitude para o método funcionar devidamente
 def regionQueryRede (taxistaIndex):
