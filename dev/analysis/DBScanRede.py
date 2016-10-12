@@ -27,10 +27,8 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 	global rede
 	global cache
 
-	print cache
-	cache = {}
-	print cache
-
+	cache = {} #limpando a cache
+	
 	dataset = paramDataset
 	eps = paramEps
 	minPts = paramMinPts
