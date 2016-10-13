@@ -8,7 +8,7 @@ class RotasDAO:
 	def __init__(self, __conn):
 		self.__conn = __conn
        
-    #ordenação opcional
+    #Retorna a lista de todas as rotas cadastrada no banco
 	def selectAll(self):
 		cur = self.__conn.cursor()
 		cur.execute("""SELECT id_edge, id_source, id_target, cost from rotas order by cost""")
@@ -20,6 +20,7 @@ class RotasDAO:
 			rotas.append(rota)
 		return rotas
 
+	#Insere uma lista de tuplas na tabela rotas
 	def executeMany(self, rotas):
 		if(rotas == None):
 			return 

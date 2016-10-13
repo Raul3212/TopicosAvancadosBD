@@ -2,6 +2,7 @@ import psycopg2
 
 class ConnectionFactory:
 	
+	#Conexão com o banco de dados
 	def getConnection(self):
 		try:
 		    __conn = psycopg2.connect("dbname='taxistas' user='postgres' host='localhost' password='postgres'")
