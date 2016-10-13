@@ -7,6 +7,7 @@ from sets import Set
 from graphs.Graph import *
 from graphs.Dijkstra import *
 
+#iniciando valores globais
 clusters = []
 n = 0
 visited = []
@@ -29,6 +30,7 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 
 	cache = {} #limpando a cache
 	
+	#iniciando valores globais de acordo com os parâmetros recebidos 
 	dataset = paramDataset
 	eps = paramEps
 	minPts = paramMinPts
@@ -42,6 +44,7 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 	# -1 outlier (noise), 1 ... id do cluster
 	clusters = [(-1, False)] * n
 	qtdClusters = 0
+	#para cada taxista p
 	for p in range(n): 
 		#print "No " + str(p) + " - Clusters " + str(qtdClusters)
 		if visited[p]:
@@ -50,11 +53,15 @@ def DBSCANRede(paramDataset, paramEps, paramMinPts, paramRede):
 		neighborPts,distinctNeighbors = regionQueryRede(p)
 		#print distinctNeighbors
 		if distinctNeighbors >= minPts: #Considera apenas taxistas distintos para iniciar um cluster
+			#expandindo cluster
 			isNew = expandClusterRede(p, neighborPts, qtdClusters)
 			if isNew:
 				qtdClusters+=1
 	return (clusters, qtdClusters)		
 
+
+#Função que expande um cluster a partir de um taxista p, seus vizinhos
+# e o id do cluster corrente
 def expandClusterRede(p, neighborPts, clusterId):
 	global clusters
 	global dataset
@@ -65,23 +72,24 @@ def expandClusterRede(p, neighborPts, clusterId):
 
 	currentClusterIndexes = []
 
+	#coloca o ponto no cluster
 	clusters[p] = (clusterId, True)
 	inCluster[p] = True
+	#inicia o tamanho como 1
 	tamanho = 1
-	#aux = 0
 	for i in neighborPts:
-		#aux += 1
-		#print "Vizinho " + str(i) + " - Clusters " + str(clusterId)
-		#print "Indice " + str(aux) + " - tamanho vizinhos " + str(len(neighborPts))
 		isCore = False
 		if visited[i] is not True: 
 			visited[i] = True
+			#busca vizinhos
 			neighborPtsNew, distinctNeighbors = regionQueryRede(i)
 			if len(neighborPtsNew) >= minPts:
+				#marca como core se a quantidade de vizinhos é maior que minPts
 				isCore = True
 				for neighbor in neighborPtsNew: 
 					if neighbor not in neighborPts:
 						neighborPts.append(neighbor)
+		#adiciona valor no cluster caso ele não esteja em nenhum cluster
 		if inCluster[i] is not True:
 			clusters[i] = (clusterId, isCore)
 			currentClusterIndexes.append(i)
@@ -113,7 +121,9 @@ def regionQueryRede (taxistaIndex):
 	distinctTaxis =  Set()
 	taxista = dataset[taxistaIndex]
 	vizinhos = []
+	#utlização de cache para vértices com vizinhos já calculados
 	if taxista.vertice not in cache:
+		#calcula vértices vizinhos
 		vizinhos = DijkstraModificado(rede, taxista.vertice, eps).run()
 				
 		'''
@@ -128,9 +138,11 @@ def regionQueryRede (taxistaIndex):
 		taxistaIndexNew = taxistaIndex
 		while taxistaIndexNew >= 0: 
 			taxistaNew = dataset[taxistaIndexNew]
+			#se o vértice do taxista estiver nos vizinhos, então ele é vizinho
 			if taxistaNew.vertice in vizinhos:
 				neighborPts.append(taxistaIndexNew)
 				distinctTaxis.add(taxistaNew.id)
+			#utilizando corte
 			elif abs(taxista.longitude - taxistaNew.longitude) > eps:
 				break
 			taxistaIndexNew = taxistaIndexNew - 1
@@ -141,6 +153,7 @@ def regionQueryRede (taxistaIndex):
 			if taxistaNew.vertice in vizinhos:
 				neighborPts.append(taxistaIndexNew)
 				distinctTaxis.add(taxistaNew.id)
+			#utilizando corte
 			elif abs(taxista.longitude - taxistaNew.longitude) > eps:
 				break
 			taxistaIndexNew = taxistaIndexNew + 1

@@ -4,17 +4,13 @@
 from Graph import *
 from heapq import *
 
-# 'heap' is a heap at all indices >= startpos, except possibly for pos.  pos
-# is the index of a leaf with a possibly out-of-order value.  Restore the
-# heap invariant.
 # Método para manter invariante da heap depois de uma modificação de valor.
-# Considerando que a distância sempre será menor a cada atualização (relaxamente),
+# Considerando que a distância sempre será menor a cada atualização (relaxamento),
 # o método coloca a posição atualizada na posição correta utilizando dessa informação, ou seja,
 # o elemento da posição 'pos' vai ser atualizado com comparação aos seus 'pais', até chegar na posição correta
 def siftdown(heap, startpos, pos):
     newitem = heap[pos]
-    # Follow the path to the root, moving parents down until finding a place
-    # newitem fits.
+    # Percorre o caminho até a raiz, movendo os pais para baixo até achar o local certo
     while pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
@@ -26,6 +22,7 @@ def siftdown(heap, startpos, pos):
     heap[pos] = newitem
 
 class DijkstraModificado:
+    #iniciando dijkstra
     def __init__(self, graph, s, eps = float('inf')):
         self.graph = graph
         self.p = {}   
@@ -35,13 +32,17 @@ class DijkstraModificado:
         self.vizinhos.add(s) #considerando que o vértice é vizinho dele próprio, útil para o DBSCAN 
         self.visitados = [False] * graph.getNumVertices()
         self.heap = []
+        #iniciando todos os vértices com precedente -1 e distância infinita
         for n in graph.getVertices():
             self.p[n] = -1
             self.d[n] = float('inf')
+        #iniciando vértice s com d = 0 e como visitado
         self.d[s] = 0
         self.visitados[s] = True
+        #adicionando s na heap
         heappush(self.heap, (self.d[s], s))
 
+    #relaxação do vértice
     def relax(self, u, v, w):
         if self.d[v] > self.d[u] + w:
             indexV = self.heap.index((self.d[v], v))
@@ -52,9 +53,11 @@ class DijkstraModificado:
                 self.vizinhos.add(v)
             self.p[v] = u
             self.heap[indexV] = (self.d[v], v)
+            #atualizando a heap
             siftdown(self.heap, 0, indexV)
 
     def run(self):
+        #retirando elementos da heap até a heap estar vazia
         while len(self.heap) != 0:
             priority, u = heappop(self.heap)
             # O dijkstra modificado está interessado apenas 
