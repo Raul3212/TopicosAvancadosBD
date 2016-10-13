@@ -3,6 +3,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 
+#Plota, através da matplotlib e mpl_toolkis, os pontos recebidos em dataset
+#p1 e p2 são tuplas (x, y) que representam os pontos inferior esquerdo e superior direito do mapa, respectivamente
+#clusters e qtdClusters são utilizados para definição de cores dos clusters
 def plot(dataset, clusters, qtdClusters, p1, p2):
 
 	cores = []

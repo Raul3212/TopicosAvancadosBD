@@ -4,7 +4,8 @@ class VerticeDAO:
 	
 	def __init__(self, __conn):
 		self.__conn = __conn
-        
+
+	#Retorna a lista de todos os vértices cadastrados no banco 
 	def selectAll(self):
 		cur = self.__conn.cursor()
 		cur.execute("""SELECT id_vertice, latitude, longitude from vertices order by longitude""")
@@ -16,6 +17,7 @@ class VerticeDAO:
 			vertices.append(vertice)
 		return vertices
 
+	#Insere uma lista de tuplas na tabela de vértices do banco de dados	
 	def executeMany(self, vertices):
 		if(vertices == None):
 			return 
@@ -24,6 +26,7 @@ class VerticeDAO:
 		self.__conn.commit()
 		cur.close()
 
+	#Retorna a lista dos id's de todos os vértices cadastrados no banco
 	def selectVerticesId(self):
 		cur = self.__conn.cursor()
 		cur.execute("""SELECT id_vertice from vertices order by longitude""")

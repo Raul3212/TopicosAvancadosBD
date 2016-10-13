@@ -10,13 +10,13 @@ class TaxistaDAO:
 	
 	def __init__(self, __conn):
 		self.__conn = __conn
-        
+    
+    #Retorna a lista de todos os taxistas cadastrados no banco
 	def selectAll(self, timeMin, timeMax):
 		cur = self.__conn.cursor()
 		sql = """SELECT id_driver, tempo, latitude, longitude from taxistas where tempo >= '{0}' and tempo < '{1}' and (longitude > 0 and latitude > 0)  order by longitude"""
 		sql = sql.format(timeMin, timeMax)
 		cur.execute(sql)
-		#cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas""")
 		rows = cur.fetchall()
 		cur.close()
 		taxistas = []
@@ -25,16 +25,14 @@ class TaxistaDAO:
 			taxistas.append(taxista)
 		return taxistas
 
-	'''
-	Pegar pontos distintos de cada taxista. 
-	Caso um taxista tenho duas entradas com a mesma localização, será considerada apenas uma delas e o maior valor da coluna tempo
-	'''
+	
+	#Pega pontos distintos de cada taxista. 
+	#Caso um taxista tenho duas entradas com a mesma localização, será considerada apenas uma delas e o maior valor da coluna tempo
 	def selectAllDistinct(self, timeMin, timeMax):
 		cur = self.__conn.cursor()
 		sql = """SELECT id_driver, max(tempo), latitude, longitude from taxistas where tempo >= '{0}' and tempo < '{1}' and (longitude > 0 and latitude > 0)  group by id_driver, longitude, latitude order by longitude"""
 		sql = sql.format(timeMin, timeMax)
 		cur.execute(sql)
-		#cur.execute("""SELECT id_driver, tempo, longitude, latitude from taxistas""")
 		rows = cur.fetchall()
 		cur.close()
 		taxistas = []
@@ -43,6 +41,7 @@ class TaxistaDAO:
 			taxistas.append(taxista)
 		return taxistas
 
+	#Insere uma lista de tuplas na tabela taxistas	
 	def executeMany(self, vertices):
 		if(vertices == None):
 			return 
@@ -51,6 +50,7 @@ class TaxistaDAO:
 		self.__conn.commit()
 		cur.close()
 
+	#Atualiza um conjunto de tuplas da tabela de taxistas
 	def updatePontos(self, pontos):
 		if(pontos == None):
 			return
@@ -59,7 +59,7 @@ class TaxistaDAO:
 		self.__conn.commit()
 		cur.close()
 
-	#retorna [[longitude, latitude)]
+	#Retorna uma lista de pontos (latitude, longitude) da tabela de taxistas
 	def selectPositions(self, timeMin, timeMax):
 		cur = self.__conn.cursor()
 
