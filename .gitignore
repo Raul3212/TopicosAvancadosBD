@@ -96,3 +96,5 @@ data/
 dev/*.csv
 dev/**/*.csv
 dev/resultados
+*.log
+*.zip
