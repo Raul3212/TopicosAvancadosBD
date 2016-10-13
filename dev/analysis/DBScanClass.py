@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from database.TaxistaDAO import *
 from model.Taxista import *
 from sets import Set

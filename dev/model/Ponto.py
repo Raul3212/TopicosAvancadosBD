@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 class Ponto:
 
     def __init__(self, latitude, longitude):

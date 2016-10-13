@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 class Graph:
     #inicia grafo com uma mapa de vértices
     def __init__(self, vertices):

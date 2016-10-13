@@ -81,7 +81,7 @@ for day in days:
 	
 	#executando DBScan com distância euclidiana
 	'''
-	result = DBSCAN(taxistas, 0.003, 50)
+	result = DBSCAN(taxistas, 0.01, 50)
 	clusters = result[0]
 	qtdClusters = result[1]
 	writeFile("resultados/resultado-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
@@ -93,7 +93,7 @@ for day in days:
 	print "Finalizado : " + str(result[1])
 	
 	#salvando resultado em arquivo
-	writeFile("resultados/4resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
+	writeFile("resultados/resultado-rede-distinct" + str(day[0]) + ".csv", clusters, taxistas, day[0])
 
 	#plotando resultado com matplot
 	'''
