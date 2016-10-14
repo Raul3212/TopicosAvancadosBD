@@ -94,9 +94,7 @@ def preprocessTaxistas(pathCsv):
     
     data = iter_loadcsv(pathCsv, dtypes, dtype, date_condition)
     if(len(data) > 0):
-        taxistaDAO.executeMany(data)
-    skiprows += step
-    
+        taxistaDAO.executeMany(data)    
 
 #Função para preprocessamento de rotas salvando os dados no banco
 #pathCsv: caminho para arquivo do csv de rotas
