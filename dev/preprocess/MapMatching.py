@@ -9,7 +9,7 @@ def distancia(ponto, vertice):
 
 
 # Algoritmo de mapmathing utilizando distãncia euclidiana 
-# parâmetro pontos (ordenado por longitude)
+# parâmetro taxistas (ordenado por longitude)
 # parâmetro vertices (ordenado por longitude)
 def mapMatchingTaxistas(taxistas, vertices):
 	qtdVertices = len(vertices)
